@@ -1,0 +1,18 @@
+.div-flex-container{
+  width:100%;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20% ;
+  border-radius: 1.5rem;
+
+}
+
+.div-between{
+  border-width: 0 1px 0 0;
+  border-style: solid;
+  border-color: rgb(182, 181, 181);
+  border: 80%;
+  
+ 
+}
+
+

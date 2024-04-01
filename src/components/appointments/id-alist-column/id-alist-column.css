@@ -1,0 +1,36 @@
+div{
+  overflow: hidden;
+}
+
+.day-header-shell{
+  border-style:double;
+  border-color: white;
+  border-width: 10px;
+}
+
+.day-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 0 0.5rem ;
+  margin-bottom: 1.1rem;
+  background-color: rgb(212, 186, 229);
+  border-radius: 1.2rem;
+  
+}
+
+button{
+  flex:1;
+  background-color: rgb(92, 23, 132);
+  border-top-right-radius: 1.2rem;
+  border-bottom-right-radius: 1.2rem;
+  color: white;
+  border-width: 0;
+  font-size: 1.5rem;
+}
+h3{
+  width: 75%;
+  text-align: center;
+}
+
+

@@ -1,0 +1,76 @@
+.grid-container-box {
+  display: grid;
+  border-radius: 1.05rem;
+  box-shadow: 0px -2px 5px 0px rgba(0, 0, 0, 0.5);
+  margin: 1.10rem 8px;
+  margin-top: 0.25rem;
+  position: relative;
+}
+
+.item1 {
+  grid-column: 1 / span 4;
+  grid-row: 1;
+}
+
+.item2 {
+  grid-column: 1 / span 4;
+  grid-row: 2;
+}
+
+.item3 {
+  width: 100%;
+  grid-column: 1  / span 4;
+  grid-row: 3;
+  
+}
+
+.item4 {
+  width: 100%;
+  grid-column: 4;
+  grid-row: 1;
+  
+}
+
+
+button{
+  width: 80%;
+  padding: 150% auto ;
+  margin: 0.25rem auto;
+  margin-bottom: 0;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border-width: 0;
+}
+
+.button-update{
+  margin-top: 0.75rem;
+  border-bottom-left-radius: 1.05rem;
+  border-bottom-right-radius: 1.05rem;
+  background-color: rgb(92, 23, 132);
+}
+
+.button-del{
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 0.75rem;
+  color: rgb(255, 255, 255);
+  background-color: brown;
+  font-size: 1.05rem;
+  margin: 0.25rem 0.25rem;
+  width: 20%;
+  padding: 0.2rem;
+  
+}
+
+.text{
+  margin:5px 0;
+  margin-left: 1.15rem;
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+
+a{
+  color: black;
+}

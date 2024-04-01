@@ -1,0 +1,15 @@
+.container {
+  width: 75vw;
+  height: auto;
+  margin: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  display: grid;
+  border-style: solid;
+  border-radius: 1px;
+  border-radius: 1.5rem;
+
+ 
+}
+
+

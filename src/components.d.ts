@@ -6,56 +6,112 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first": string;
-        /**
-          * The last name
-         */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
+    interface IdAlistColumn {
+        "appointmentsList": any[];
+        "name": String;
+        "weekDay": Date;
+    }
+    interface IdAppointmentBox {
+        "appointment": any;
+        "update": boolean;
+    }
+    interface IdAppointmentsList {
+        "selectedDay": Date | null;
+    }
+    interface IdAppointmentsPage {
+    }
+    interface IdCalendarSearch {
     }
 }
+export interface IdCalendarSearchCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIdCalendarSearchElement;
+}
 declare global {
-    interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
+    interface HTMLIdAlistColumnElement extends Components.IdAlistColumn, HTMLStencilElement {
     }
-    var HTMLMyComponentElement: {
-        prototype: HTMLMyComponentElement;
-        new (): HTMLMyComponentElement;
+    var HTMLIdAlistColumnElement: {
+        prototype: HTMLIdAlistColumnElement;
+        new (): HTMLIdAlistColumnElement;
+    };
+    interface HTMLIdAppointmentBoxElement extends Components.IdAppointmentBox, HTMLStencilElement {
+    }
+    var HTMLIdAppointmentBoxElement: {
+        prototype: HTMLIdAppointmentBoxElement;
+        new (): HTMLIdAppointmentBoxElement;
+    };
+    interface HTMLIdAppointmentsListElement extends Components.IdAppointmentsList, HTMLStencilElement {
+    }
+    var HTMLIdAppointmentsListElement: {
+        prototype: HTMLIdAppointmentsListElement;
+        new (): HTMLIdAppointmentsListElement;
+    };
+    interface HTMLIdAppointmentsPageElement extends Components.IdAppointmentsPage, HTMLStencilElement {
+    }
+    var HTMLIdAppointmentsPageElement: {
+        prototype: HTMLIdAppointmentsPageElement;
+        new (): HTMLIdAppointmentsPageElement;
+    };
+    interface HTMLIdCalendarSearchElementEventMap {
+        "submitWeek": String;
+    }
+    interface HTMLIdCalendarSearchElement extends Components.IdCalendarSearch, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIdCalendarSearchElementEventMap>(type: K, listener: (this: HTMLIdCalendarSearchElement, ev: IdCalendarSearchCustomEvent<HTMLIdCalendarSearchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIdCalendarSearchElementEventMap>(type: K, listener: (this: HTMLIdCalendarSearchElement, ev: IdCalendarSearchCustomEvent<HTMLIdCalendarSearchElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIdCalendarSearchElement: {
+        prototype: HTMLIdCalendarSearchElement;
+        new (): HTMLIdCalendarSearchElement;
     };
     interface HTMLElementTagNameMap {
-        "my-component": HTMLMyComponentElement;
+        "id-alist-column": HTMLIdAlistColumnElement;
+        "id-appointment-box": HTMLIdAppointmentBoxElement;
+        "id-appointments-list": HTMLIdAppointmentsListElement;
+        "id-appointments-page": HTMLIdAppointmentsPageElement;
+        "id-calendar-search": HTMLIdCalendarSearchElement;
     }
 }
 declare namespace LocalJSX {
-    interface MyComponent {
-        /**
-          * The first name
-         */
-        "first"?: string;
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
+    interface IdAlistColumn {
+        "appointmentsList"?: any[];
+        "name"?: String;
+        "weekDay"?: Date;
+    }
+    interface IdAppointmentBox {
+        "appointment"?: any;
+        "update"?: boolean;
+    }
+    interface IdAppointmentsList {
+        "selectedDay"?: Date | null;
+    }
+    interface IdAppointmentsPage {
+    }
+    interface IdCalendarSearch {
+        "onSubmitWeek"?: (event: IdCalendarSearchCustomEvent<String>) => void;
     }
     interface IntrinsicElements {
-        "my-component": MyComponent;
+        "id-alist-column": IdAlistColumn;
+        "id-appointment-box": IdAppointmentBox;
+        "id-appointments-list": IdAppointmentsList;
+        "id-appointments-page": IdAppointmentsPage;
+        "id-calendar-search": IdCalendarSearch;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "id-alist-column": LocalJSX.IdAlistColumn & JSXBase.HTMLAttributes<HTMLIdAlistColumnElement>;
+            "id-appointment-box": LocalJSX.IdAppointmentBox & JSXBase.HTMLAttributes<HTMLIdAppointmentBoxElement>;
+            "id-appointments-list": LocalJSX.IdAppointmentsList & JSXBase.HTMLAttributes<HTMLIdAppointmentsListElement>;
+            "id-appointments-page": LocalJSX.IdAppointmentsPage & JSXBase.HTMLAttributes<HTMLIdAppointmentsPageElement>;
+            "id-calendar-search": LocalJSX.IdCalendarSearch & JSXBase.HTMLAttributes<HTMLIdCalendarSearchElement>;
         }
     }
 }

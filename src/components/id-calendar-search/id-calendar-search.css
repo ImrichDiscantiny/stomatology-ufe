@@ -1,0 +1,39 @@
+div{
+  margin-bottom: 3rem;
+}
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+h2{
+  font-size: 2rem;
+}
+
+input[type="date"]
+{
+    font-size: 1.20rem;
+    width: 15rem;
+    height: auto;
+
+    margin-bottom: 2rem;
+}
+
+
+button {
+  transition-duration: 0.4s;
+  width: fit-content;
+  font-size: 1.20rem;
+  background-color: rgb(92, 23, 132);
+  color: white;
+  font-weight: 500;
+  padding: 1.2rem;
+  border-radius: 1.25rem;
+  border: 0;
+}
+
+button:hover {
+  background-color: #aa0404; /* Green */
+  color: white;
+}
+
