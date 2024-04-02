@@ -48,15 +48,16 @@ export class IdAppointmentBox {
     }
     else{
       return (
-        <div class="grid-container-box">
-        <label>Čas</label>
-        <input/>
-        <label>Meno pacienta</label>
-        <input/>
-        
-        <button class="item3 button-update"> Upraviť  </button>
-        <button class=" button-del"> X </button>
-
+        <div >
+        <form class="grid-container-box" action="">
+          <label>Čas</label>
+          <input/>
+          <label>Meno pacienta</label>
+          <input/>
+          
+          <button class="item3 button-update"> Upraviť  </button>
+          <button class=" button-del"> X </button>
+        </form>
       </div>
         );
     }

@@ -33,7 +33,7 @@ export class IdAppointmentsList {
    getAppointments(): Appointments[] {
     const today = new Date();
     const appointments = [
-        {pacient: "Matej D.", date: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0), duration: 45, dayShortcut: "Po"},
+        {pacient: "Marrtin G.", date: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0), duration: 45, dayShortcut: "Po"},
         {pacient: "Adam R.", date: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 9, 15), duration: 45, dayShortcut: "Po"},
         {pacient: "Rudolf S.", date: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 10, 30), duration: 60, dayShortcut: "St"},
         {pacient: "Ján N.", date: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 11, 45), duration: 30, dayShortcut: "Po"},
