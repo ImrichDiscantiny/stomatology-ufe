@@ -5,6 +5,8 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { Appointments } from "./global/app";
+export { Appointments } from "./global/app";
 export namespace Components {
     interface IdAlistColumn {
         "appointmentsList": any[];
@@ -12,8 +14,8 @@ export namespace Components {
         "weekDay": Date;
     }
     interface IdAppointmentBox {
-        "appointment": any;
-        "update": boolean;
+        "appointment": Appointments;
+        "updating": boolean;
     }
     interface IdAppointmentsList {
         "selectedDay": Date | null;
@@ -84,8 +86,8 @@ declare namespace LocalJSX {
         "weekDay"?: Date;
     }
     interface IdAppointmentBox {
-        "appointment"?: any;
-        "update"?: boolean;
+        "appointment"?: Appointments;
+        "updating"?: boolean;
     }
     interface IdAppointmentsList {
         "selectedDay"?: Date | null;

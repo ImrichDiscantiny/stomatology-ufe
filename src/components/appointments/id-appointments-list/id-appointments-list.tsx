@@ -1,15 +1,8 @@
-import { Component, h, Prop, State } from '@stencil/core';
+import { Component, h, Prop, State} from '@stencil/core';
 import '@material/web/list/list'
 import '@material/web/list/list-item'
-
-
-interface Appointments{
-  date: Date
-  pacient: String
-  duration: number
-  dayShortcut: string
- 
-}
+import {Appointments} from '../../../global/app'
+import state from '../../../global/store';
 
 interface DayColumn{
   date: Date
@@ -30,20 +23,8 @@ export class IdAppointmentsList {
   @State()
   appointmentsList: Appointments[]
 
-   getAppointments(): Appointments[] {
-    const today = new Date();
-    const appointments = [
-        {pacient: "Marrtin G.", date: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 8, 0), duration: 45, dayShortcut: "Po"},
-        {pacient: "Adam R.", date: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 9, 15), duration: 45, dayShortcut: "Po"},
-        {pacient: "Rudolf S.", date: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 10, 30), duration: 60, dayShortcut: "St"},
-        {pacient: "Ján N.", date: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 11, 45), duration: 30, dayShortcut: "Po"},
-        {pacient: "Branislav P.", date: new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0), duration: 30, dayShortcut: "Pia"}
-];
-    return appointments
-  }
-
   initAppointments(){
-    this.appointmentsList = this.getAppointments();
+    this.appointmentsList = state.appointments;
   }
 
   getWholeWeek(): DayColumn[] {

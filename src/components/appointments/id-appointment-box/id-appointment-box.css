@@ -4,8 +4,10 @@
   box-shadow: 0px -2px 5px 0px rgba(0, 0, 0, 0.5);
   margin: 1.10rem 8px;
   margin-top: 0.25rem;
+  max-width: 100%;
   position: relative;
 }
+
 
 .item1 {
   grid-column: 1 / span 4;
@@ -15,6 +17,8 @@
 .item2 {
   grid-column: 1 / span 4;
   grid-row: 2;
+  display: flex;
+  min-width: 100%;
 }
 
 .item3 {
@@ -28,7 +32,7 @@
   width: 100%;
   grid-column: 4;
   grid-row: 1;
-  
+  min-width:0;
 }
 
 
@@ -50,6 +54,10 @@ button{
   background-color: rgb(92, 23, 132);
 }
 
+.button-update:hover{
+  background-color: rgb(193, 136, 226);
+}
+
 .button-del{
   position: absolute;
   top: 0;
@@ -64,13 +72,71 @@ button{
   
 }
 
+a{
+  color: black;
+}
+
 .text{
-  margin:5px 0;
-  margin-left: 1.15rem;
+  margin:0.5rem 0.25rem;
+  margin-left: 0.55rem;
   font-size: 1.15rem;
   font-weight: bold;
 }
 
-a{
-  color: black;
+
+input{
+  margin:0.25rem  0.6rem;
+  margin-left: 0.55rem;
+  box-sizing:content-box;
+  font-size: 1.25rem;
+  min-width:0;
+  overflow: hidden;
 }
+
+select{
+  margin:0.25rem  auto;
+  margin-left: 0.55rem;
+  min-width:90%;
+  font-size: 1.25rem;
+  background-color: white;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1px;
+}
+
+.item1-u {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+}
+
+.item2-u {
+  grid-column: 1 / span 3;
+  grid-row: 2;
+}
+
+.item3-u {
+  grid-column: 1 / span 2;
+  grid-row: 3;
+}
+
+.item4-u {
+  grid-column: 1 / span 3;
+  grid-row: 4;
+}
+
+.item5-u {
+  grid-column: 1 / span 2;
+  grid-row: 5;
+}
+
+.item6-u {
+  grid-column: 1 / span 3;
+  grid-row: 6;
+}
+
+.item7-u {
+  width: 100%;
+  grid-column: 1  / span 4;
+  grid-row: 7;
+}
+

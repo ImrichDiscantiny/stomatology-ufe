@@ -28,6 +28,11 @@ button{
   border-width: 0;
   font-size: 1.5rem;
 }
+
+button:hover{
+  background-color: rgb(193, 136, 226);
+}
+
 h3{
   width: 75%;
   text-align: center;

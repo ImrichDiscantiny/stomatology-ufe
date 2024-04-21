@@ -1,4 +1,5 @@
-import { Component, h, Prop, State } from '@stencil/core';
+import { Component, h, Prop} from '@stencil/core';
+import state from '../../../global/store';
 
 @Component({
   tag: 'id-alist-column',
@@ -16,16 +17,17 @@ export class IdAlistColumn {
   @Prop({mutable: true})
   appointmentsList: any[]
 
-  @State()
-  added: boolean
- 
+
   onAdd = () => {
-    this.added = true
-    this.appointmentsList = [
-      {     pacient: "Adam M.", date: new Date(), duration: 45, dayShortcut: "Po"},
-      ...this.appointmentsList
-    ];
-  
+
+    if(state.updating === false){
+      state.updating = true
+      
+      this.appointmentsList = [
+        { id: 'new', pacient: "", date: new Date(), duration: 0, dayShortcut: this.name},
+        ...this.appointmentsList
+      ];
+    }
   }
 
   render() {
@@ -38,11 +40,11 @@ export class IdAlistColumn {
           </div>
         <div>
           {
-            this.appointmentsList.map((app, index) =>(
-              this.added && index === 0 ? (
-                <id-appointment-box update={true} appointment={app}></id-appointment-box>
+            this.appointmentsList.map((app) =>(
+              app.id === 'new' ? (
+                <id-appointment-box updating={true} appointment={app}></id-appointment-box>
               ) : (
-                <id-appointment-box update={false} appointment={app}></id-appointment-box>
+                <id-appointment-box updating={false} appointment={app}></id-appointment-box>
               )
               
             ))
