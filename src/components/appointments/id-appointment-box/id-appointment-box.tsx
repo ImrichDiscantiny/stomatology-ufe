@@ -65,7 +65,7 @@ export class IdAppointmentBox {
     };
 
     if (action === 'POST') onAddList(appointmentEntry);
-    else onAddList(appointmentEntry);
+    else onUpdateList(appointmentEntry);
   };
 
   getSlovakDay(selectedDay) {
