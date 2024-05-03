@@ -19,13 +19,10 @@ function formatDate(date: Date): string {
 const { state } = createStore({
   apiBase: 'http://localhost:5000/api',
   updating: false,
-  appointments: await getAppointments(),
-  onAdd: await onAddList,
-  onUpdate: await onUpdateList,
-  onDelete: await onDeleteList,
+  appointments: [] as string | AppointmentListEntry[],
 });
 
-async function getAppointments(): Promise<AppointmentListEntry[] | string> {
+export async function getAppointments(): Promise<AppointmentListEntry[] | string> {
   const apiBase = 'http://localhost:5000/api';
 
   const currentDate = new Date();
@@ -43,7 +40,7 @@ async function getAppointments(): Promise<AppointmentListEntry[] | string> {
   }
 }
 
-async function onAddList(entry: AppointmentListEntry) {
+export async function onAddList(entry: AppointmentListEntry) {
   const apiBase = 'http://localhost:5000/api';
   const today = new Date();
 
@@ -71,16 +68,17 @@ async function onAddList(entry: AppointmentListEntry) {
     if (response.status < 299) {
       alert('Zmeny boli uložené');
     } else {
-      alert((this.errorMessage = `Cannot store entry: ${response.statusText}`));
+      alert(`Cannot store entry: ${response.statusText}`);
     }
   } catch (err: any) {
-    alert((this.errorMessage = `Cannot store entry: ${err.message || 'unknown'}`));
+    alert(`Cannot store entry: ${err.message || 'unknown'}`);
   }
 }
 
-async function onUpdateList(entry: AppointmentListEntry) {
+export async function onUpdateList(entry: AppointmentListEntry) {
+  const apiBase = 'http://localhost:5000/api';
   try {
-    const response = await StomatologyAppointmentListApiFactory(undefined, this.apiBase).updateAppointmentListEntry(entry.date, entry.id, entry);
+    const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).updateAppointmentListEntry(entry.date, entry.id, entry);
     if (response.status < 299) {
       alert('Zmeny boli uložené');
     } else {
@@ -91,7 +89,7 @@ async function onUpdateList(entry: AppointmentListEntry) {
   }
 }
 
-async function onDeleteList(date: string, id: string) {
+export async function onDeleteList(date: string, id: string) {
   const today = new Date();
 
   if (today > new Date(date)) {

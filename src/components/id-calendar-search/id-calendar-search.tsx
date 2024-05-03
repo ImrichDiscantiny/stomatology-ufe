@@ -1,4 +1,6 @@
 import { Component, h, Event, EventEmitter } from '@stencil/core';
+import state from '../../global/store';
+import { getAppointments } from '../../global/store';
 
 @Component({
   tag: 'id-calendar-search',
@@ -10,9 +12,9 @@ export class IdCalendarSearch {
 
   @Event() submitWeek: EventEmitter<String>;
 
-  private handleSubmit = (event: Event) => {
+  private handleSubmit = async (event: Event) => {
     event.preventDefault();
-    console.log(this.dateInput.value);
+    state.appointments = await getAppointments();
     this.submitWeek.emit(this.dateInput.value);
   };
 

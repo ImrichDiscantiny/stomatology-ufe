@@ -22,7 +22,7 @@ export class IdAppointmentsList {
   @State()
   appointmentsList: AppointmentListEntry[] | string;
 
-  initAppointments() {
+  async initAppointments() {
     this.appointmentsList = state.appointments;
   }
 

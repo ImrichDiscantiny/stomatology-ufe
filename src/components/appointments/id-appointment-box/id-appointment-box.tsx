@@ -1,6 +1,7 @@
 import { Component, h, Prop, Event, EventEmitter } from '@stencil/core';
 import { AppointmentListEntry } from '../../../api/stomatology-al';
 import state from '../../../global/store';
+import { onAddList, onUpdateList, onDeleteList } from '../../../global/store';
 
 @Component({
   tag: 'id-appointment-box',
@@ -33,7 +34,7 @@ export class IdAppointmentBox {
   onDelete = async (event: Event) => {
     event.preventDefault();
     console.log('aa');
-    await state.onDelete(this.appointment.date, this.appointment.id);
+    await onDeleteList(this.appointment.date, this.appointment.id);
   };
 
   onSubmit = (event: Event) => {
@@ -63,8 +64,8 @@ export class IdAppointmentBox {
       },
     };
 
-    if (action === 'POST') state.onAdd(appointmentEntry);
-    else state.onUpdate(appointmentEntry);
+    if (action === 'POST') onAddList(appointmentEntry);
+    else onAddList(appointmentEntry);
   };
 
   getSlovakDay(selectedDay) {
