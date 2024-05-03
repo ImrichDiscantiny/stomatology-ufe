@@ -5,16 +5,16 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { Appointments } from "./global/app";
-export { Appointments } from "./global/app";
+import { AppointmentListEntry } from "./api/stomatology-al";
+export { AppointmentListEntry } from "./api/stomatology-al";
 export namespace Components {
     interface IdAlistColumn {
-        "appointmentsList": any[];
-        "name": String;
+        "appointmentsList": AppointmentListEntry[];
+        "name": string;
         "weekDay": Date;
     }
     interface IdAppointmentBox {
-        "appointment": Appointments;
+        "appointment": AppointmentListEntry;
         "updating": boolean;
     }
     interface IdAppointmentsList {
@@ -24,6 +24,10 @@ export namespace Components {
     }
     interface IdCalendarSearch {
     }
+}
+export interface IdAppointmentBoxCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIdAppointmentBoxElement;
 }
 export interface IdCalendarSearchCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -36,7 +40,18 @@ declare global {
         prototype: HTMLIdAlistColumnElement;
         new (): HTMLIdAlistColumnElement;
     };
+    interface HTMLIdAppointmentBoxElementEventMap {
+        "cancelEvent": String;
+    }
     interface HTMLIdAppointmentBoxElement extends Components.IdAppointmentBox, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIdAppointmentBoxElementEventMap>(type: K, listener: (this: HTMLIdAppointmentBoxElement, ev: IdAppointmentBoxCustomEvent<HTMLIdAppointmentBoxElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIdAppointmentBoxElementEventMap>(type: K, listener: (this: HTMLIdAppointmentBoxElement, ev: IdAppointmentBoxCustomEvent<HTMLIdAppointmentBoxElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLIdAppointmentBoxElement: {
         prototype: HTMLIdAppointmentBoxElement;
@@ -81,12 +96,13 @@ declare global {
 }
 declare namespace LocalJSX {
     interface IdAlistColumn {
-        "appointmentsList"?: any[];
-        "name"?: String;
+        "appointmentsList"?: AppointmentListEntry[];
+        "name"?: string;
         "weekDay"?: Date;
     }
     interface IdAppointmentBox {
-        "appointment"?: Appointments;
+        "appointment"?: AppointmentListEntry;
+        "onCancelEvent"?: (event: IdAppointmentBoxCustomEvent<String>) => void;
         "updating"?: boolean;
     }
     interface IdAppointmentsList {

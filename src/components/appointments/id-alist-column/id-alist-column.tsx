@@ -1,5 +1,6 @@
-import { Component, h, Prop} from '@stencil/core';
+import { Component, h, Prop, State, Listen } from '@stencil/core';
 import state from '../../../global/store';
+import { AppointmentListEntry } from '../../../api/stomatology-al';
 
 @Component({
   tag: 'id-alist-column',
@@ -7,52 +8,67 @@ import state from '../../../global/store';
   shadow: true,
 })
 export class IdAlistColumn {
+  @Prop()
+  name: string;
 
   @Prop()
-  name: String
-  
-  @Prop()
-  weekDay: Date
+  weekDay: Date;
 
-  @Prop({mutable: true})
-  appointmentsList: any[]
+  @Prop({ mutable: true })
+  appointmentsList: AppointmentListEntry[];
 
+  @State()
+  custom: boolean = false;
 
-  onAdd = () => {
-
-    if(state.updating === false){
-      state.updating = true
-      
-      this.appointmentsList = [
-        { id: 'new', pacient: "", date: new Date(), duration: 0, dayShortcut: this.name},
-        ...this.appointmentsList
-      ];
+  @Listen('cancelEvent')
+  handlCancel(event: CustomEvent<string>) {
+    if (this.custom === true) {
+      this.appointmentsList = this.appointmentsList.filter(item => item.id !== event.detail);
+      this.custom = false;
     }
   }
 
-  render() {
-    console.log(this.appointmentsList)
-    return (
-      <div>    
-          <div class="day-header">
-            <h3 >{`${this.name} - ${this.weekDay.getDate()}.${this.weekDay.getMonth() + 1}`}</h3>
-            <button onClick={this.onAdd}>+</button>
-          </div>
-        <div>
-          {
-            this.appointmentsList.map((app) =>(
-              app.id === 'new' ? (
-                <id-appointment-box updating={true} appointment={app}></id-appointment-box>
-              ) : (
-                <id-appointment-box updating={false} appointment={app}></id-appointment-box>
-              )
-              
-            ))
-          }
-          </div>
+  onAdd = () => {
+    if (state.updating === false) {
+      state.updating = true;
+      this.custom = true;
 
+      const europeanDate = this.weekDay.toLocaleString('en-GB', { timeZone: 'Europe/Bratislava' }).split(',')[0].split('/');
+      console.log(europeanDate);
+
+      this.appointmentsList = [
+        {
+          id: 'new',
+          patient: '',
+          fullname: '',
+          date: europeanDate[2] + '-' + europeanDate[1] + '-' + europeanDate[0],
+          duration: '',
+          dayShortcut: this.name,
+          description: { reasonForAppointment: '', teeths: [] },
+        },
+        ...this.appointmentsList,
+      ];
+    }
+  };
+
+  render() {
+    console.log(this.appointmentsList);
+    return (
+      <div>
+        <div class="day-header">
+          <h3>{`${this.name} - ${this.weekDay.getDate()}.${this.weekDay.getMonth() + 1}`}</h3>
+          <button onClick={this.onAdd}>+</button>
+        </div>
+        <div>
+          {this.appointmentsList.map(app =>
+            app.id === 'new' ? (
+              <id-appointment-box updating={true} appointment={app}></id-appointment-box>
+            ) : (
+              <id-appointment-box updating={false} appointment={app}></id-appointment-box>
+            ),
+          )}
+        </div>
       </div>
     );
   }
-
 }
