@@ -143,7 +143,7 @@ export class IdAppointmentBox {
           <label class="item5-u text">Meno pacienta</label>
           <input class="item6-u" type="text" value={this.appointment.patient} />
           <label class="item7-u text">Popis</label>
-          <textarea class="item8-u text" value={this.appointment.description.reasonForAppointment}>
+          <textarea class="item8-u" value={this.appointment.description.reasonForAppointment}>
             {' '}
           </textarea>
           <label class="item9-u text">Zuby</label>
