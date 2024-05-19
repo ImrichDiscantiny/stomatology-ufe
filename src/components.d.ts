@@ -29,10 +29,6 @@ export interface IdAppointmentBoxCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIdAppointmentBoxElement;
 }
-export interface IdCalendarSearchCustomEvent<T> extends CustomEvent<T> {
-    detail: T;
-    target: HTMLIdCalendarSearchElement;
-}
 declare global {
     interface HTMLIdAlistColumnElement extends Components.IdAlistColumn, HTMLStencilElement {
     }
@@ -69,18 +65,7 @@ declare global {
         prototype: HTMLIdAppointmentsPageElement;
         new (): HTMLIdAppointmentsPageElement;
     };
-    interface HTMLIdCalendarSearchElementEventMap {
-        "submitWeek": String;
-    }
     interface HTMLIdCalendarSearchElement extends Components.IdCalendarSearch, HTMLStencilElement {
-        addEventListener<K extends keyof HTMLIdCalendarSearchElementEventMap>(type: K, listener: (this: HTMLIdCalendarSearchElement, ev: IdCalendarSearchCustomEvent<HTMLIdCalendarSearchElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLIdCalendarSearchElementEventMap>(type: K, listener: (this: HTMLIdCalendarSearchElement, ev: IdCalendarSearchCustomEvent<HTMLIdCalendarSearchElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLIdCalendarSearchElement: {
         prototype: HTMLIdCalendarSearchElement;
@@ -111,7 +96,6 @@ declare namespace LocalJSX {
     interface IdAppointmentsPage {
     }
     interface IdCalendarSearch {
-        "onSubmitWeek"?: (event: IdCalendarSearchCustomEvent<String>) => void;
     }
     interface IntrinsicElements {
         "id-alist-column": IdAlistColumn;

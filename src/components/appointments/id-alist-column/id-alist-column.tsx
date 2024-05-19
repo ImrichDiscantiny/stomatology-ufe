@@ -38,7 +38,7 @@ export class IdAlistColumn {
 
       this.appointmentsList = [
         {
-          id: 'new',
+          id: '@new',
           patient: '',
           fullname: '',
           date: europeanDate[2] + '-' + europeanDate[1] + '-' + europeanDate[0],
@@ -61,7 +61,7 @@ export class IdAlistColumn {
         </div>
         <div>
           {this.appointmentsList.map(app =>
-            app.id === 'new' ? (
+            app.id === '@new' ? (
               <id-appointment-box updating={true} appointment={app}></id-appointment-box>
             ) : (
               <id-appointment-box updating={false} appointment={app}></id-appointment-box>

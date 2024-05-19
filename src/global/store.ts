@@ -9,28 +9,21 @@ export interface FormUpdate {
   dayShortcut: string;
 }
 
-function formatDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
 const { state } = createStore({
-  apiBase: 'http://localhost:5000/api',
+  targetDateStr: null as string | null,
   updating: false,
   appointments: [] as string | AppointmentListEntry[],
 });
 
-export async function getAppointments(): Promise<AppointmentListEntry[] | string> {
-  const apiBase = 'http://localhost:5000/api';
-
-  const currentDate = new Date();
-  const formattedDate = formatDate(currentDate);
-
+export async function getAppointments(targetDateStr: string): Promise<AppointmentListEntry[] | string> {
+  const apiBase = 'http://localhost:30081/api';
+  
   try {
-    const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).getWaitingListEntries(formattedDate);
+    const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).getWaitingListEntries(targetDateStr);
     if (response.status < 299) {
+      if(response.data === null){
+        return []
+      }
       return response.data;
     } else {
       return `Cannot retrieve list of appointments: ${response.statusText}`;
@@ -41,7 +34,7 @@ export async function getAppointments(): Promise<AppointmentListEntry[] | string
 }
 
 export async function onAddList(entry: AppointmentListEntry) {
-  const apiBase = 'http://localhost:5000/api';
+  const apiBase = 'http://localhost:30081/api';
   const today = new Date();
 
   if (typeof state.appointments == 'string') {
@@ -67,6 +60,7 @@ export async function onAddList(entry: AppointmentListEntry) {
     const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).createAppointmentListEntry(entry.date, entry);
     if (response.status < 299) {
       alert('Zmeny boli uložené');
+      state.appointments = await getAppointments(state.targetDateStr)
     } else {
       alert(`Cannot store entry: ${response.statusText}`);
     }
@@ -76,11 +70,12 @@ export async function onAddList(entry: AppointmentListEntry) {
 }
 
 export async function onUpdateList(entry: AppointmentListEntry) {
-  const apiBase = 'http://localhost:5000/api';
+  const apiBase = 'http://localhost:30081/api';
   try {
     const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).updateAppointmentListEntry(entry.date, entry.id, entry);
     if (response.status < 299) {
       alert('Zmeny boli uložené');
+      state.appointments = await getAppointments(state.targetDateStr)
     } else {
       alert(`Cannot store entry: ${response.statusText}`);
     }
@@ -96,11 +91,12 @@ export async function onDeleteList(date: string, id: string) {
     alert('Nemožné odstrániť starý záznam');
     return;
   }
-  const apiBase = 'http://localhost:5000/api';
+  const apiBase = 'http://localhost:30081/api';
   try {
     const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).deleteAppointmentListEntry(date, id);
     if (response.status < 299) {
       alert('Zmeny boli uložené');
+      state.appointments = await getAppointments(state.targetDateStr)
     } else {
       alert(`Cannot delete entry: ${response.statusText}`);
     }

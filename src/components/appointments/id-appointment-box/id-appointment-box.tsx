@@ -23,7 +23,10 @@ export class IdAppointmentBox {
     this.updating = false;
     state.updating = false;
 
-    this.cancelEvent.emit(this.appointment.id);
+    if(this.appointment.id === "@new"){
+      this.cancelEvent.emit(this.appointment.id);
+    }
+   
   };
 
   onUpdate = () => {
@@ -33,7 +36,7 @@ export class IdAppointmentBox {
 
   onDelete = async (event: Event) => {
     event.preventDefault();
-    console.log('aa');
+
     await onDeleteList(this.appointment.date, this.appointment.id);
   };
 
@@ -43,7 +46,7 @@ export class IdAppointmentBox {
 
     let action = form['form'].action.split('/');
     action = action[action.length - 1];
-
+    
     // console.log(action);
     // console.log(form['form']['0']['value']);
     // console.log(form['form']['1']['value']);
@@ -55,7 +58,7 @@ export class IdAppointmentBox {
       id: this.appointment.id,
       date: form['form']['0']['value'],
       duration: form['form']['1']['value'],
-      patient: this.shortenPatientName(form['form']['1']['value']),
+      patient: this.shortenPatientName(form['form']['2']['value']),
       fullname: form['form']['2']['value'],
       dayShortcut: this.getSlovakDay(form['form']['0']['value']),
       description: {
@@ -63,9 +66,13 @@ export class IdAppointmentBox {
         teeths: form['form']['4']['value'].split(/[,\s]+/),
       },
     };
+    console.log("appointmentEntry:", appointmentEntry)
 
     if (action === 'POST') onAddList(appointmentEntry);
     else onUpdateList(appointmentEntry);
+
+    this.updating = false;
+    state.updating = false;
   };
 
   getSlovakDay(selectedDay) {
@@ -131,7 +138,7 @@ export class IdAppointmentBox {
       );
     } else {
       let action;
-      if (this.appointment.id === 'new') action = 'POST';
+      if (this.appointment.id === '@new') action = 'POST';
       else action = 'PUT';
 
       return (
@@ -141,7 +148,7 @@ export class IdAppointmentBox {
           <label class="item3-u text">Čas</label>
           <select class="item4-u">{this.generateTimeOptions()}</select>
           <label class="item5-u text">Meno pacienta</label>
-          <input class="item6-u" type="text" value={this.appointment.patient} />
+          <input class="item6-u" type="text" value={this.appointment.fullname} />
           <label class="item7-u text">Popis</label>
           <textarea class="item8-u" value={this.appointment.description.reasonForAppointment}>
             {' '}

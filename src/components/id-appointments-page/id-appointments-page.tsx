@@ -1,4 +1,5 @@
-import { Component, h, State, Listen } from '@stencil/core';
+import { Component, h, State } from '@stencil/core';
+import state from '../../global/store';
 
 @Component({
   tag: 'id-appointments-page',
@@ -9,13 +10,22 @@ export class IdAppointmentsPage {
   @State()
   dayYear: String | null;
 
-  @Listen('submitWeek')
-  submitWeekHandler(event: CustomEvent<String>) {
-    this.dayYear = event.detail;
+  formatDate() {
+    if(!state.targetDateStr){
+      const currentDate = new Date();
+     
+      const year = currentDate.getFullYear();
+      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+      const day = String(currentDate.getDate()).padStart(2, '0');
+      this.dayYear = `${year}-${month}-${day}`;
+    }
+    else this.dayYear =  state.targetDateStr
+
   }
 
   render() {
-    let date = null;
+    let date
+    this.formatDate();
 
     if (this.dayYear) {
       date = this.dayYear.split('-');
