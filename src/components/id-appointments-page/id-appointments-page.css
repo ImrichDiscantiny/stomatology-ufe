@@ -1,8 +1,7 @@
 .container {
   width: 75vw;
   height: auto;
-  margin: auto;
-  margin-top: 1.25rem;
+  margin: 1.25rem auto;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
   display: grid;
