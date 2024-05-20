@@ -112,12 +112,20 @@ export class IdAppointmentBox {
     return firstWord + ' ' + abbreviation;
   }
 
-  generateTimeOptions() {
+  generateTimeOptions(selected: string) {
     const options = [];
     for (let hour = 7; hour <= 17; hour++) {
       for (let minute = 0; minute < 60; minute += 60) {
         const time = `${hour}:${this.roundZerous(minute.toString())}`;
-        options.push(<option value={time}>{time}</option>);
+        if (time === selected) {
+          options.push(
+            <option selected={true} value={time}>
+              {time}
+            </option>,
+          );
+        } else {
+          options.push(<option value={time}>{time}</option>);
+        }
       }
     }
     return options;
@@ -167,7 +175,7 @@ export class IdAppointmentBox {
           <input required class="item2-u" type="date" value={this.appointment.date} />
           <label class="item3-u text">Čas</label>
           <select required class="item4-u">
-            {this.generateTimeOptions()}
+            {this.generateTimeOptions(this.appointment.duration)}
           </select>
           <label class="item5-u text">Meno pacienta</label>
           <input required class="item6-u" type="text" value={this.appointment.fullname} />
