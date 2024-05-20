@@ -51,8 +51,16 @@ export class IdAlistColumn {
     }
   };
 
+  timeToInt(timeStr: string): number {
+    const [hours, minutes] = timeStr.split(':');
+    return Number(hours);
+  }
+
   render() {
-    console.log(this.appointmentsList);
+    const sortedNumber = this.appointmentsList.sort((a, b) =>
+      this.timeToInt(a.duration) > this.timeToInt(b.duration) ? 1 : this.timeToInt(b.duration) > this.timeToInt(a.duration) ? -1 : 0,
+    );
+
     return (
       <div>
         <div class="day-header">

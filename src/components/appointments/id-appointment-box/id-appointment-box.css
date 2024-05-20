@@ -22,15 +22,19 @@
 
 .item3 {
   width: 100%;
-  grid-column: 1 / span 4;
-  grid-row: 3;
+  grid-column: 4 / span 4;
+  grid-row: 3 / span 2;
 }
 
 .item4 {
   width: 100%;
-  grid-column: 4;
-  grid-row: 1;
-  min-width: 0;
+  grid-column: 1 / span 4;
+  grid-row: 5;
+}
+
+.box-down {
+  display: flex;
+  flex-direction: column;
 }
 
 button {
@@ -55,6 +59,18 @@ button {
   background-color: rgb(193, 136, 226);
 }
 
+.button-down {
+  color: white;
+  font-size: 1.25rem;
+  background-color: rgb(22, 120, 34);
+  border-color: rgb(255, 255, 255);
+  border-style: dotted;
+  border-radius: 0.5rem;
+  padding: 0 0.75rem;
+  margin: 0.5rem 0.25rem;
+  margin-left: 0.55rem;
+}
+
 .button-del {
   position: absolute;
   top: 0;
@@ -68,12 +84,12 @@ button {
   padding: 0.2rem;
 }
 
-a {
-  color: black;
+.button-del:hover {
+  background-color: rgb(226, 136, 136);
 }
 
 .text {
-  margin: 0.5rem 0.25rem;
+  margin: 0.35rem 0.25rem;
   margin-left: 0.55rem;
   font-size: 1.15rem;
   font-weight: bold;
@@ -83,7 +99,7 @@ input {
   margin: 0.25rem 0.6rem;
   margin-left: 0.55rem;
   box-sizing: content-box;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   min-width: 0;
   overflow: hidden;
 }
@@ -104,11 +120,10 @@ textarea {
   margin: 0.25rem 0.6rem;
   margin-left: 0.55rem;
   box-sizing: content-box;
-  font-size: 1.25rem;
-  font-weight: normal; 
+  font-size: 1.1rem;
+  font-weight: normal;
   min-width: 0;
   overflow: hidden;
- 
 }
 
 .item1-u {

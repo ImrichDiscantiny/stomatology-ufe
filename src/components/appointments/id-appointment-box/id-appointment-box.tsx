@@ -1,4 +1,4 @@
-import { Component, h, Prop, Event, EventEmitter } from '@stencil/core';
+import { Component, h, Prop, Event, State, EventEmitter } from '@stencil/core';
 import { AppointmentListEntry } from '../../../api/stomatology-al';
 import state from '../../../global/store';
 import { onAddList, onUpdateList, onDeleteList } from '../../../global/store';
@@ -10,6 +10,9 @@ import { onAddList, onUpdateList, onDeleteList } from '../../../global/store';
   assetsDirs: ['assets'],
 })
 export class IdAppointmentBox {
+  @State()
+  dropdown: boolean = false;
+
   @Prop()
   appointment: AppointmentListEntry;
 
@@ -23,10 +26,9 @@ export class IdAppointmentBox {
     this.updating = false;
     state.updating = false;
 
-    if(this.appointment.id === "@new"){
+    if (this.appointment.id === '@new') {
       this.cancelEvent.emit(this.appointment.id);
     }
-   
   };
 
   onUpdate = () => {
@@ -36,7 +38,7 @@ export class IdAppointmentBox {
 
   onDelete = async (event: Event) => {
     event.preventDefault();
-
+    this.cancelEvent.emit(this.appointment.id);
     await onDeleteList(this.appointment.date, this.appointment.id);
   };
 
@@ -46,13 +48,14 @@ export class IdAppointmentBox {
 
     let action = form['form'].action.split('/');
     action = action[action.length - 1];
-    
-    // console.log(action);
-    // console.log(form['form']['0']['value']);
-    // console.log(form['form']['1']['value']);
-    // console.log(form['form']['2']['value']);
-    // console.log(form['form']['3']['value']);
-    // console.log(form['form']['4']['value']);
+
+    const dayShortcut = this.getSlovakDay(form['form']['0']['value']);
+
+    if (dayShortcut === '') {
+      console.log(dayShortcut);
+      alert('Cannot add appointments for saturday or sunday');
+      return;
+    }
 
     const appointmentEntry: AppointmentListEntry = {
       id: this.appointment.id,
@@ -60,22 +63,28 @@ export class IdAppointmentBox {
       duration: form['form']['1']['value'],
       patient: this.shortenPatientName(form['form']['2']['value']),
       fullname: form['form']['2']['value'],
-      dayShortcut: this.getSlovakDay(form['form']['0']['value']),
+      dayShortcut: dayShortcut,
       description: {
         reasonForAppointment: form['form']['3']['value'],
         teeths: form['form']['4']['value'].split(/[,\s]+/),
       },
     };
-    console.log("appointmentEntry:", appointmentEntry)
-
+    this.cancelEvent.emit(this.appointment.id);
     if (action === 'POST') onAddList(appointmentEntry);
-    else onUpdateList(appointmentEntry);
+    else {
+      onUpdateList(appointmentEntry);
+    }
 
     this.updating = false;
     state.updating = false;
   };
 
-  getSlovakDay(selectedDay) {
+  onClickDrop = () => {
+    this.dropdown = !this.dropdown;
+    console.log(this.dropdown);
+  };
+
+  getSlovakDay(selectedDay): string {
     const date = new Date(selectedDay);
 
     const nameDay = date.toLocaleDateString('sk-SK', { weekday: 'long', timeZone: 'Europe/Bratislava' });
@@ -88,8 +97,7 @@ export class IdAppointmentBox {
     else if (nameDay === 'streda') shift_down = 2;
     else if (nameDay === 'štvrtok') shift_down = 3;
     else if (nameDay === 'piatok') shift_down = 4;
-    else if (nameDay === 'sobota') shift_down = 5;
-    else if (nameDay === 'nedeľa') shift_down = 6;
+    else return '';
 
     return namedDays[shift_down];
   }
@@ -120,15 +128,27 @@ export class IdAppointmentBox {
   }
 
   render() {
+    let buttonDown;
+    if (this.dropdown === false) buttonDown = 'Rozšíriť';
+    else buttonDown = 'Zatvoriť';
+
     if (this.updating == false) {
       return (
         <div class="grid-container-box">
-          <a href="https://www.w3schools.com" class="item1 text">
-            {'Čas: ' + this.appointment.duration}
-          </a>
+          <span class="item1 text">{'Čas: ' + this.appointment.duration}</span>
           <span class="item2 text">{this.appointment.patient} </span>
+          <div class="box-down">
+            <button onClick={this.onClickDrop} class="button-down">
+              {buttonDown}
+            </button>
+            <id-information-box
+              dropdown={this.dropdown}
+              information={this.appointment.description.reasonForAppointment}
+              teeths={this.appointment.description.teeths}
+            ></id-information-box>
+          </div>
 
-          <button onClick={this.onUpdate} class="item3 button-update">
+          <button onClick={this.onUpdate} class="item4 button-update">
             Upraviť
           </button>
           <button onClick={this.onDelete} class=" button-del">
@@ -144,13 +164,15 @@ export class IdAppointmentBox {
       return (
         <form class="grid-container-box" action={action}>
           <label class="item1-u text">Dátum</label>
-          <input class="item2-u" type="date" value={this.appointment.date} />
+          <input required class="item2-u" type="date" value={this.appointment.date} />
           <label class="item3-u text">Čas</label>
-          <select class="item4-u">{this.generateTimeOptions()}</select>
+          <select required class="item4-u">
+            {this.generateTimeOptions()}
+          </select>
           <label class="item5-u text">Meno pacienta</label>
-          <input class="item6-u" type="text" value={this.appointment.fullname} />
+          <input required class="item6-u" type="text" value={this.appointment.fullname} />
           <label class="item7-u text">Popis</label>
-          <textarea class="item8-u" value={this.appointment.description.reasonForAppointment}>
+          <textarea required class="item8-u" value={this.appointment.description.reasonForAppointment}>
             {' '}
           </textarea>
           <label class="item9-u text">Zuby</label>

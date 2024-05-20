@@ -12,18 +12,27 @@ export class IdCalendarSearch {
 
   private handleSubmit = async (event: Event) => {
     event.preventDefault();
-    console.log(this.dateInput.value)
-    state.targetDateStr = this.dateInput.value
+
+    state.targetDateStr = this.dateInput.value;
     state.updating = false;
     state.appointments = await getAppointments(this.dateInput.value);
   };
+
+  getFormattedDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
 
   render() {
     return (
       <div>
         <h2>Kalendár termínov</h2>
         <form action="get">
-          <input type="date" ref={el => (this.dateInput = el as HTMLInputElement)} />
+          <input type="date" value={this.getFormattedDate()} ref={el => (this.dateInput = el as HTMLInputElement)} />
           <button onClick={this.handleSubmit}> Vyber týždeň</button>
         </form>
       </div>

@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.box-down {
+  display: flex;
+  flex-direction: column;
+}
+
+h4 {
+  margin: 0.5rem 0.75rem;
+}
+
+span {
+  margin: 0.25rem 1rem;
+  font-size: 1.05rem;
+}
