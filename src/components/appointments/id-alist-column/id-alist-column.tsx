@@ -52,12 +52,12 @@ export class IdAlistColumn {
   };
 
   timeToInt(timeStr: string): number {
-    const [hours, minutes] = timeStr.split(':');
+    const [hours, _] = timeStr.split(':');
     return Number(hours);
   }
 
   render() {
-    const sortedNumber = this.appointmentsList.sort((a, b) =>
+    const sortedList = this.appointmentsList.sort((a, b) =>
       this.timeToInt(a.duration) > this.timeToInt(b.duration) ? 1 : this.timeToInt(b.duration) > this.timeToInt(a.duration) ? -1 : 0,
     );
 
@@ -68,7 +68,7 @@ export class IdAlistColumn {
           <button onClick={this.onAdd}>+</button>
         </div>
         <div>
-          {this.appointmentsList.map(app =>
+          {sortedList.map(app =>
             app.id === '@new' ? (
               <id-appointment-box updating={true} appointment={app}></id-appointment-box>
             ) : (
