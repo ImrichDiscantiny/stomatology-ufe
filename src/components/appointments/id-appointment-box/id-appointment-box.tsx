@@ -170,7 +170,7 @@ export class IdAppointmentBox {
       else action = 'PUT';
 
       return (
-        <form class="grid-container-box" action={action}>
+        <form onSubmit={this.onSubmit} class="grid-container-box" action={action}>
           <label class="item1-u text">Dátum</label>
           <input required class="item2-u" type="date" value={this.appointment.date} />
           <label class="item3-u text">Čas</label>
@@ -180,15 +180,13 @@ export class IdAppointmentBox {
           <label class="item5-u text">Meno pacienta</label>
           <input required class="item6-u" type="text" value={this.appointment.fullname} />
           <label class="item7-u text">Popis</label>
-          <textarea required class="item8-u" value={this.appointment.description.reasonForAppointment}>
+          <textarea placeholder={'Krátky popis'} required class="item8-u" value={this.appointment.description.reasonForAppointment}>
             {' '}
           </textarea>
-          <label class="item9-u text">Zuby</label>
-          <input class="item10-u" type="text" value={this.appointment.description.teeths.join(', ')} />
+          <label class="item9-u text">Postihnuté zuby</label>
+          <input placeholder={' 33, 34... '} class="item10-u" type="text" value={this.appointment.description.teeths.join(', ')} />
 
-          <button onClick={this.onSubmit} class="item0-u button-update">
-            Potvrdiť
-          </button>
+          <button class="item0-u button-update">Potvrdiť</button>
           <button onClick={this.onCancel} class=" button-del">
             X
           </button>

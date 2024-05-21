@@ -1,5 +1,6 @@
 .container {
   width: 75vw;
+  min-width: 800px;
   height: auto;
   margin: 1.25rem auto;
   padding-left: 1.5rem;
@@ -8,8 +9,4 @@
   border-style: solid;
   border-radius: 1px;
   border-radius: 1.5rem;
-
- 
 }
-
-
