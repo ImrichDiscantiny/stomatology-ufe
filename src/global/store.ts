@@ -16,7 +16,7 @@ const { state } = createStore({
 });
 
 export async function getAppointments(targetDateStr: string): Promise<AppointmentListEntry[] | string> {
-  const apiBase = 'http://localhost:30081/api';
+  const apiBase = 'http://localhost/id-api';
 
   try {
     const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).getWaitingListEntries(targetDateStr);
@@ -34,7 +34,7 @@ export async function getAppointments(targetDateStr: string): Promise<Appointmen
 }
 
 export async function onAddList(entry: AppointmentListEntry) {
-  const apiBase = 'http://localhost:30081/api';
+  const apiBase = 'http://localhost/id-api';
 
   if (typeof state.appointments == 'string') {
     return;
@@ -82,7 +82,7 @@ export async function onUpdateList(entry: AppointmentListEntry) {
     return;
   }
 
-  const apiBase = 'http://localhost:30081/api';
+  const apiBase = 'http://localhost/id-api';
   try {
     const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).updateAppointmentListEntry(entry.date, entry.id, entry);
     if (response.status < 299) {
@@ -106,7 +106,7 @@ export async function onDeleteList(date: string, id: string) {
     return;
   }
 
-  const apiBase = 'http://localhost:30081/api';
+  const apiBase = 'http://localhost/id-api';
 
   try {
     const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).deleteAppointmentListEntry(date, id);
