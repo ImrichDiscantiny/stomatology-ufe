@@ -1,7 +1,7 @@
 import { Component, h, Prop, Event, State, EventEmitter } from '@stencil/core';
 import { AppointmentListEntry } from '../../../api/stomatology-al';
 import state from '../../../global/store';
-import { onAddList, onUpdateList, onDeleteList } from '../../../global/store';
+import { onAddList, onUpdateList, onDeleteList, checkDate } from '../../../global/store';
 
 @Component({
   tag: 'id-appointment-box',
@@ -44,12 +44,10 @@ export class IdAppointmentBox {
 
   onSubmit = (event: Event) => {
     event.preventDefault();
-    const form = event.target;
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
 
-    let action = form['form'].action.split('/');
-    action = action[action.length - 1];
-
-    const dayShortcut = this.getSlovakDay(form['form']['0']['value']);
+    const dayShortcut = this.getSlovakDay(formData.get('date') as string);
 
     if (dayShortcut === '') {
       console.log(dayShortcut);
@@ -59,17 +57,21 @@ export class IdAppointmentBox {
 
     const appointmentEntry: AppointmentListEntry = {
       id: this.appointment.id,
-      date: form['form']['0']['value'],
-      duration: form['form']['1']['value'],
-      patient: this.shortenPatientName(form['form']['2']['value']),
-      fullname: form['form']['2']['value'],
+      date: formData.get('date') as string,
+      duration: formData.get('duration') as string,
+      patient: this.shortenPatientName(formData.get('fullname') as string),
+      fullname: formData.get('fullname') as string,
       dayShortcut: dayShortcut,
       description: {
-        reasonForAppointment: form['form']['3']['value'],
-        teeths: form['form']['4']['value'].split(/[,\s]+/),
+        reasonForAppointment: formData.get('reason') as string,
+        teeths: (formData.get('teeths') as string).split(/[,\s]+/),
       },
     };
+
     this.cancelEvent.emit(this.appointment.id);
+
+    let action = form.method.toUpperCase();
+
     if (action === 'POST') onAddList(appointmentEntry);
     else {
       onUpdateList(appointmentEntry);
@@ -137,12 +139,21 @@ export class IdAppointmentBox {
 
   render() {
     let buttonDown;
+    let isValid = checkDate(this.appointment.date);
+    let disabled = false;
+    let boxClass = 'grid-container-box';
+
+    if (!isValid) {
+      disabled = true;
+      boxClass = 'grid-container-box  grid-is-old';
+    }
+
     if (this.dropdown === false) buttonDown = 'Rozšíriť';
     else buttonDown = 'Zatvoriť';
 
     if (this.updating == false) {
       return (
-        <div class="grid-container-box">
+        <div class={boxClass}>
           <span class="item1 text">{'Čas: ' + this.appointment.duration}</span>
           <span class="item2 text">{this.appointment.patient} </span>
           <div class="box-down">
@@ -156,10 +167,11 @@ export class IdAppointmentBox {
             ></id-information-box>
           </div>
 
-          <button onClick={this.onUpdate} class="item4 button-update">
+          <button disabled={disabled} onClick={this.onUpdate} class="item4 button-update">
             Upraviť
           </button>
-          <button onClick={this.onDelete} class=" button-del">
+
+          <button disabled={disabled} onClick={this.onDelete} class=" button-del">
             X
           </button>
         </div>
@@ -172,19 +184,19 @@ export class IdAppointmentBox {
       return (
         <form onSubmit={this.onSubmit} class="grid-container-box" action={action}>
           <label class="item1-u text">Dátum</label>
-          <input required class="item2-u" type="date" value={this.appointment.date} />
+          <input required name="date" class="item2-u" type="date" value={this.appointment.date} />
           <label class="item3-u text">Čas</label>
-          <select required class="item4-u">
+          <select required name="duration" class="item4-u">
             {this.generateTimeOptions(this.appointment.duration)}
           </select>
           <label class="item5-u text">Meno pacienta</label>
-          <input required class="item6-u" type="text" value={this.appointment.fullname} />
+          <input required name="fullname" class="item6-u" type="text" value={this.appointment.fullname} />
           <label class="item7-u text">Popis</label>
-          <textarea placeholder={'Krátky popis'} required class="item8-u" value={this.appointment.description.reasonForAppointment}>
+          <textarea required placeholder={'Krátky popis'} name="reason" class="item8-u" value={this.appointment.description.reasonForAppointment}>
             {' '}
           </textarea>
           <label class="item9-u text">Postihnuté zuby</label>
-          <input placeholder={' 33, 34... '} class="item10-u" type="text" value={this.appointment.description.teeths.join(', ')} />
+          <input placeholder={' 33, 34... '} name="teeths" class="item10-u" type="text" value={this.appointment.description.teeths.join(', ')} />
 
           <button class="item0-u button-update">Potvrdiť</button>
           <button onClick={this.onCancel} class=" button-del">

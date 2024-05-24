@@ -15,6 +15,17 @@ const { state } = createStore({
   appointments: [] as string | AppointmentListEntry[],
 });
 
+export function checkDate(entryDate: string): boolean {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+
+  if (yesterday >= new Date(entryDate)) {
+    return false;
+  }
+  return true;
+}
+
 export async function getAppointments(targetDateStr: string): Promise<AppointmentListEntry[] | string> {
   const apiBase = 'http://localhost/id-api';
 
@@ -40,12 +51,10 @@ export async function onAddList(entry: AppointmentListEntry) {
     return;
   }
 
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
+  let dateChecked = checkDate(entry.date);
 
-  if (yesterday > new Date(entry.date)) {
-    alert('Nemožné odstrániť starý záznam');
+  if (!dateChecked) {
+    alert('Nemožné pridať starý záznam');
     return;
   }
 
@@ -73,12 +82,10 @@ export async function onAddList(entry: AppointmentListEntry) {
 }
 
 export async function onUpdateList(entry: AppointmentListEntry) {
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
+  let dateChecked = checkDate(entry.date);
 
-  if (yesterday > new Date(entry.date)) {
-    alert('Nemožné odstrániť starý záznam');
+  if (!dateChecked) {
+    alert('Nemožné zmenit starý záznam');
     return;
   }
 
@@ -97,11 +104,9 @@ export async function onUpdateList(entry: AppointmentListEntry) {
 }
 
 export async function onDeleteList(date: string, id: string) {
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(today.getDate() - 1);
+  let dateChecked = checkDate(date);
 
-  if (yesterday > new Date(date)) {
+  if (!dateChecked) {
     alert('Nemožné odstrániť starý záznam');
     return;
   }

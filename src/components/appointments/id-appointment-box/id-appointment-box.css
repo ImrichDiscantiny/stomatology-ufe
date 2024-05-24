@@ -8,6 +8,10 @@
   position: relative;
 }
 
+.grid-is-old {
+  background-color: rgb(255, 219, 219);
+}
+
 .item1 {
   grid-column: 1 / span 4;
   grid-row: 1;
@@ -71,6 +75,10 @@ button {
   margin-left: 0.55rem;
 }
 
+.button-down:hover {
+  background-color: rgb(123, 193, 129);
+}
+
 .button-del {
   position: absolute;
   top: 0;
@@ -82,6 +90,11 @@ button {
   margin: 0.25rem 0.25rem;
   width: 20%;
   padding: 0.2rem;
+}
+
+button[disabled='disabled'],
+button:disabled {
+  background-color: grey;
 }
 
 .button-del:hover {
