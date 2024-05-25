@@ -37,7 +37,7 @@ export async function getAppointments(targetDateStr: string): Promise<Appointmen
       }
       return response.data;
     } else {
-      return `Cannot retrieve list of appointments: ${response.statusText}`;
+      return `Načítanie dát zlyhalo: ${response.statusText}`;
     }
   } catch (err: any) {
     return `Cannot retrieve list of appointments: ${err.message || 'unknown'}`;
@@ -54,6 +54,7 @@ export async function onAddList(entry: AppointmentListEntry) {
   let dateChecked = checkDate(entry.date);
 
   if (!dateChecked) {
+    console.log(entry);
     alert('Nemožné pridať starý záznam');
     return;
   }
@@ -74,10 +75,10 @@ export async function onAddList(entry: AppointmentListEntry) {
       alert('Zmeny boli uložené');
       state.appointments = await getAppointments(state.targetDateStr);
     } else {
-      alert(`Cannot store entry: ${response.statusText}`);
+      alert(`Ukladanie zlyhalo: ${response.statusText}`);
     }
   } catch (err: any) {
-    alert(`Cannot store entry: ${err.message || 'unknown'}`);
+    alert(`Nastala chyba: ${err.message || 'unknown'}`);
   }
 }
 
@@ -96,10 +97,10 @@ export async function onUpdateList(entry: AppointmentListEntry) {
       alert('Zmeny boli uložené');
       state.appointments = await getAppointments(state.targetDateStr);
     } else {
-      alert(`Cannot store entry: ${response.statusText}`);
+      alert(`Ukladanie zlyhalo: ${response.statusText}`);
     }
   } catch (err: any) {
-    alert(`Cannot store entry: ${err.message || 'unknown'}`);
+    alert(`Nastala chyba: ${err.message || 'unknown'}`);
   }
 }
 
@@ -119,10 +120,10 @@ export async function onDeleteList(date: string, id: string) {
       alert('Zmeny boli uložené');
       state.appointments = await getAppointments(state.targetDateStr);
     } else {
-      alert(`Cannot delete entry: ${response.statusText}`);
+      alert(`Ukladanie zlyhalo: ${response.statusText}`);
     }
   } catch (err: any) {
-    alert(`Cannot delete entry: ${err.message || 'unknown'}`);
+    alert(`Nastala chyba: ${err.message || 'unknown'}`);
   }
 }
 

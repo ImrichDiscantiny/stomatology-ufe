@@ -1,4 +1,4 @@
-import { Component, h, Prop, Event, State, EventEmitter } from '@stencil/core';
+import { Component, h, Prop, Event, State, EventEmitter, Method } from '@stencil/core';
 import { AppointmentListEntry } from '../../../api/stomatology-al';
 import state from '../../../global/store';
 import { onAddList, onUpdateList, onDeleteList, checkDate } from '../../../global/store';
@@ -70,9 +70,9 @@ export class IdAppointmentBox {
 
     this.cancelEvent.emit(this.appointment.id);
 
-    let action = form.method.toUpperCase();
+    let method = form.method.toUpperCase();
 
-    if (action === 'POST') onAddList(appointmentEntry);
+    if (method === 'POST') onAddList(appointmentEntry);
     else {
       onUpdateList(appointmentEntry);
     }
@@ -177,12 +177,12 @@ export class IdAppointmentBox {
         </div>
       );
     } else {
-      let action;
-      if (this.appointment.id === '@new') action = 'POST';
-      else action = 'PUT';
+      let method;
+      if (this.appointment.id === '@new') method = 'POST';
+      else method = 'PUT';
 
       return (
-        <form onSubmit={this.onSubmit} class="grid-container-box" action={action}>
+        <form onSubmit={this.onSubmit} class="grid-container-box" method={method}>
           <label class="item1-u text">Dátum</label>
           <input required name="date" class="item2-u" type="date" value={this.appointment.date} />
           <label class="item3-u text">Čas</label>
