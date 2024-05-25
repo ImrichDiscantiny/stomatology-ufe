@@ -1,4 +1,4 @@
-import { Component, h, Prop, Event, State, EventEmitter, Method } from '@stencil/core';
+import { Component, h, Prop, Event, State, EventEmitter } from '@stencil/core';
 import { AppointmentListEntry } from '../../../api/stomatology-al';
 import state from '../../../global/store';
 import { onAddList, onUpdateList, onDeleteList, checkDate } from '../../../global/store';
