@@ -14,7 +14,7 @@ const { state } = createStore({
   updating: false,
   appointments: [] as string | AppointmentListEntry[],
   apiBase: '' as string,
-  basePath: '/appointment-list/' as string,
+  basePath: '/id-appointments-page/' as string,
   relativePath: '',
 });
 
