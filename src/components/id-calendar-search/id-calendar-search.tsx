@@ -9,7 +9,7 @@ import { getAppointments } from '../../global/store';
 })
 export class IdCalendarSearch {
   @State()
-  dateInput!: string;
+  dateInput: string = '';
 
   @Prop()
   apiBase: string;
@@ -36,7 +36,7 @@ export class IdCalendarSearch {
     toRelative(location.pathname);
   }
 
-  private handleSubmit = (event: Event) => {
+  private handleSubmit = async (event: Event) => {
     event.preventDefault();
 
     const form = event.target as HTMLFormElement;
@@ -49,13 +49,9 @@ export class IdCalendarSearch {
 
     state.targetDateStr = this.dateInput;
     state.updating = false;
-
-    this.getAppointmets();
-  };
-
-  private async getAppointmets() {
+    state.apiBase = this.apiBase;
     state.appointments = await getAppointments(this.dateInput, state.apiBase);
-  }
+  };
 
   getFormattedDate(): string {
     const today = new Date();
@@ -67,10 +63,7 @@ export class IdCalendarSearch {
   }
 
   render() {
-    state.apiBase = this.apiBase;
-    this.dateInput = this.getFormattedDate();
-    this.getAppointmets();
-    console.log(this.apiBase);
+    if (this.dateInput === '') this.dateInput = this.getFormattedDate();
 
     return (
       <div>
