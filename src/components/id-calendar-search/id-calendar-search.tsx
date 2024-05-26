@@ -49,7 +49,7 @@ export class IdCalendarSearch {
 
     state.targetDateStr = this.dateInput;
     state.updating = false;
-    state.apiBase = this.apiBase;
+
     state.appointments = await getAppointments(this.dateInput, state.apiBase);
   };
 
@@ -63,8 +63,10 @@ export class IdCalendarSearch {
   }
 
   render() {
-    if (this.dateInput === '') this.dateInput = this.getFormattedDate();
-
+    if (this.dateInput === '') {
+      this.dateInput = this.getFormattedDate();
+      state.apiBase = this.apiBase;
+    }
     return (
       <div>
         <h2>Kalendár termínov</h2>
