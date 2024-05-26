@@ -21,8 +21,10 @@ export namespace Components {
         "selectedDay": Date | null;
     }
     interface IdAppointmentsPage {
+        "apiBase": string;
     }
     interface IdCalendarSearch {
+        "apiBase": string;
     }
     interface IdInformationBox {
         "dropdown": boolean;
@@ -106,8 +108,10 @@ declare namespace LocalJSX {
         "selectedDay"?: Date | null;
     }
     interface IdAppointmentsPage {
+        "apiBase"?: string;
     }
     interface IdCalendarSearch {
+        "apiBase"?: string;
     }
     interface IdInformationBox {
         "dropdown"?: boolean;

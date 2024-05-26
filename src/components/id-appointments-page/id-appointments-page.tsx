@@ -1,4 +1,4 @@
-import { Component, h, State } from '@stencil/core';
+import { Component, h, State, Prop } from '@stencil/core';
 import state from '../../global/store';
 
 @Component({
@@ -9,22 +9,22 @@ import state from '../../global/store';
 export class IdAppointmentsPage {
   @State()
   dayYear: String | null;
+  @Prop()
+  apiBase: string;
 
   formatDate() {
-    if(!state.targetDateStr){
+    if (!state.targetDateStr) {
       const currentDate = new Date();
-     
+
       const year = currentDate.getFullYear();
       const month = String(currentDate.getMonth() + 1).padStart(2, '0');
       const day = String(currentDate.getDate()).padStart(2, '0');
       this.dayYear = `${year}-${month}-${day}`;
-    }
-    else this.dayYear =  state.targetDateStr
-
+    } else this.dayYear = state.targetDateStr;
   }
 
   render() {
-    let date
+    let date;
     this.formatDate();
 
     if (this.dayYear) {
@@ -34,7 +34,7 @@ export class IdAppointmentsPage {
 
     return (
       <div class="container">
-        <id-calendar-search></id-calendar-search>
+        <id-calendar-search apiBase={this.apiBase}></id-calendar-search>
         <id-appointments-list selectedDay={date}></id-appointments-list>
       </div>
     );

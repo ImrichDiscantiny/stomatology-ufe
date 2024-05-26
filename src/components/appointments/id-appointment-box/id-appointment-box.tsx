@@ -39,7 +39,7 @@ export class IdAppointmentBox {
   onDelete = async (event: Event) => {
     event.preventDefault();
     this.cancelEvent.emit(this.appointment.id);
-    await onDeleteList(this.appointment.date, this.appointment.id);
+    await onDeleteList(this.appointment.date, this.appointment.id, state.apiBase);
   };
 
   onSubmit = (event: Event) => {
@@ -72,9 +72,9 @@ export class IdAppointmentBox {
 
     let method = form.method.toUpperCase();
 
-    if (method === 'POST') onAddList(appointmentEntry);
+    if (method === 'POST') onAddList(appointmentEntry, state.apiBase);
     else {
-      onUpdateList(appointmentEntry);
+      onUpdateList(appointmentEntry, state.apiBase);
     }
 
     this.updating = false;

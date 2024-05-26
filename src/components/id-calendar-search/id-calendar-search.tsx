@@ -1,4 +1,4 @@
-import { Component, h } from '@stencil/core';
+import { Component, h, State, Prop } from '@stencil/core';
 import state from '../../global/store';
 import { getAppointments } from '../../global/store';
 
@@ -8,15 +8,54 @@ import { getAppointments } from '../../global/store';
   shadow: true,
 })
 export class IdCalendarSearch {
-  dateInput!: HTMLInputElement;
+  @State()
+  dateInput!: string;
 
-  private handleSubmit = async (event: Event) => {
+  @Prop()
+  apiBase: string;
+
+  componentWillLoad() {
+    const baseUri = new URL(state.basePath, document.baseURI || '/').pathname;
+
+    const toRelative = (path: string) => {
+      if (path.startsWith(baseUri)) {
+        state.relativePath = path.slice(baseUri.length);
+      } else {
+        state.relativePath = '';
+      }
+    };
+
+    window.navigation?.addEventListener('navigate', (ev: Event) => {
+      if ((ev as any).canIntercept) {
+        (ev as any).intercept();
+      }
+      let path = new URL((ev as any).destination.url).pathname;
+      toRelative(path);
+    });
+
+    toRelative(location.pathname);
+  }
+
+  private handleSubmit = (event: Event) => {
     event.preventDefault();
 
-    state.targetDateStr = this.dateInput.value;
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    this.dateInput = formData.get('time') as string;
+
+    const absolute = new URL(this.dateInput + '/entries', new URL(state.basePath, document.baseURI)).pathname;
+    window.navigation.navigate(absolute);
+
+    state.targetDateStr = this.dateInput;
     state.updating = false;
-    state.appointments = await getAppointments(this.dateInput.value);
+
+    this.getAppointmets();
   };
+
+  private async getAppointmets() {
+    state.appointments = await getAppointments(this.dateInput, state.apiBase);
+  }
 
   getFormattedDate(): string {
     const today = new Date();
@@ -28,12 +67,17 @@ export class IdCalendarSearch {
   }
 
   render() {
+    state.apiBase = this.apiBase;
+    this.dateInput = this.getFormattedDate();
+    this.getAppointmets();
+    console.log(this.apiBase);
+
     return (
       <div>
         <h2>Kalendár termínov</h2>
-        <form action="get">
-          <input type="date" value={this.getFormattedDate()} ref={el => (this.dateInput = el as HTMLInputElement)} />
-          <button onClick={this.handleSubmit}> Vyber týždeň</button>
+        <form action="get" onSubmit={this.handleSubmit}>
+          <input name="time" type="date" value={this.dateInput} />
+          <button> Vyber týždeň</button>
         </form>
       </div>
     );

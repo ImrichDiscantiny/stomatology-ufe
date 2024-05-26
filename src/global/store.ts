@@ -13,7 +13,12 @@ const { state } = createStore({
   targetDateStr: null as string | null,
   updating: false,
   appointments: [] as string | AppointmentListEntry[],
+  apiBase: '' as string,
+  basePath: '/appointment-list/' as string,
+  relativePath: '',
 });
+
+export default state;
 
 export function checkDate(entryDate: string): boolean {
   const today = new Date();
@@ -26,9 +31,7 @@ export function checkDate(entryDate: string): boolean {
   return true;
 }
 
-export async function getAppointments(targetDateStr: string): Promise<AppointmentListEntry[] | string> {
-  const apiBase = 'http://localhost/id-api';
-
+export async function getAppointments(targetDateStr: string, apiBase: string): Promise<AppointmentListEntry[] | string> {
   try {
     const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).getWaitingListEntries(targetDateStr);
     if (response.status < 299) {
@@ -40,13 +43,11 @@ export async function getAppointments(targetDateStr: string): Promise<Appointmen
       return `Načítanie dát zlyhalo: ${response.statusText}`;
     }
   } catch (err: any) {
-    return `Cannot retrieve list of appointments: ${err.message || 'unknown'}`;
+    return `Nastala chyba: ${err.message || 'unknown'}`;
   }
 }
 
-export async function onAddList(entry: AppointmentListEntry) {
-  const apiBase = 'http://localhost/id-api';
-
+export async function onAddList(entry: AppointmentListEntry, apiBase: string) {
   if (typeof state.appointments == 'string') {
     return;
   }
@@ -73,7 +74,7 @@ export async function onAddList(entry: AppointmentListEntry) {
     const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).createAppointmentListEntry(entry.date, entry);
     if (response.status < 299) {
       alert('Zmeny boli uložené');
-      state.appointments = await getAppointments(state.targetDateStr);
+      state.appointments = await getAppointments(state.targetDateStr, apiBase);
     } else {
       alert(`Ukladanie zlyhalo: ${response.statusText}`);
     }
@@ -82,7 +83,7 @@ export async function onAddList(entry: AppointmentListEntry) {
   }
 }
 
-export async function onUpdateList(entry: AppointmentListEntry) {
+export async function onUpdateList(entry: AppointmentListEntry, apiBase: string) {
   let dateChecked = checkDate(entry.date);
 
   if (!dateChecked) {
@@ -90,12 +91,11 @@ export async function onUpdateList(entry: AppointmentListEntry) {
     return;
   }
 
-  const apiBase = 'http://localhost/id-api';
   try {
     const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).updateAppointmentListEntry(entry.date, entry.id, entry);
     if (response.status < 299) {
       alert('Zmeny boli uložené');
-      state.appointments = await getAppointments(state.targetDateStr);
+      state.appointments = await getAppointments(state.targetDateStr, apiBase);
     } else {
       alert(`Ukladanie zlyhalo: ${response.statusText}`);
     }
@@ -104,7 +104,7 @@ export async function onUpdateList(entry: AppointmentListEntry) {
   }
 }
 
-export async function onDeleteList(date: string, id: string) {
+export async function onDeleteList(date: string, id: string, apiBase: string) {
   let dateChecked = checkDate(date);
 
   if (!dateChecked) {
@@ -112,13 +112,11 @@ export async function onDeleteList(date: string, id: string) {
     return;
   }
 
-  const apiBase = 'http://localhost/id-api';
-
   try {
     const response = await StomatologyAppointmentListApiFactory(undefined, apiBase).deleteAppointmentListEntry(date, id);
     if (response.status < 299) {
       alert('Zmeny boli uložené');
-      state.appointments = await getAppointments(state.targetDateStr);
+      state.appointments = await getAppointments(state.targetDateStr, apiBase);
     } else {
       alert(`Ukladanie zlyhalo: ${response.statusText}`);
     }
@@ -126,76 +124,3 @@ export async function onDeleteList(date: string, id: string) {
     alert(`Nastala chyba: ${err.message || 'unknown'}`);
   }
 }
-
-export default state;
-
-// const today = new Date();
-// const appointments: AppointmentListEntry[] = [
-//   {
-//     id: '0',
-//     date: today,
-//     patient: 'Marrtin G.',
-//     fullname: 'Marrtin G.',
-//     duration: '7:00',
-//     dayShortcut: 'Po',
-//     description: {
-//       reasonForAppointment: 'Pravidelná kontrola',
-//       longSummary: 'Marrtin G. mal termín na pravidelnú kontrolu. Pri vyšetrení sa zistilo, že má zdravé zuby bez zistených problémov.',
-//       teeths: [],
-//     },
-//   },
-//   {
-//     id: '1',
-//     date: today,
-//     patient: 'Adam R.',
-//     fullname: 'Adam R.',
-//     duration: '8:00',
-//     dayShortcut: 'Po',
-//     description: {
-//       reasonForAppointment: 'Bolesť zubov',
-//       longSummary: 'Adam R. prišiel kvôli bolesti zubov. Po vyšetrení sa zistila kazuistika a odporučil sa mu ďalší postup liečby.',
-//       teeths: [],
-//     },
-//   },
-//   {
-//     id: '2',
-//     date: today,
-//     patient: 'Rudolf S.',
-//     fullname: 'Rudolf S.',
-//     duration: '12:00',
-//     dayShortcut: 'St',
-//     description: {
-//       reasonForAppointment: 'Čistenie zubov',
-//       longSummary: 'Rudolf S. prišiel na termín na čistenie zubov. Čistenie prebehlo bez problémov a Rudolf bol oboznámený s dôležitosťou ústnej hygieny.',
-//       teeths: [],
-//     },
-//   },
-//   {
-//     id: '3',
-//     date: today,
-//     patient: 'Ján N.',
-//     fullname: 'Ján N.',
-//     duration: '9:00',
-//     dayShortcut: 'Po',
-//     description: {
-//       reasonForAppointment: 'Krvácanie ďasien',
-//       longSummary: 'Ján N. sa sťažoval na krvácanie ďasien. Po vyšetrení bola zistená zápal ďasien a diskutovali sa možnosti liečby.',
-//       teeths: [],
-//     },
-//   },
-//   {
-//     id: '4',
-//     date: today,
-//     patient: 'Branislav P.',
-//     fullname: 'Branislav P.',
-//     duration: '14:00',
-//     dayShortcut: 'Pia',
-//     description: {
-//       reasonForAppointment: 'Zlomený zub',
-//       longSummary: 'Branislav P. mal zlomený zub. Ďalšie vyšetrenie odhalilo, že na opravu zubu je potrebné plnenie.',
-//       teeths: [],
-//     },
-//   },
-// ];
-
-// return appointments;
